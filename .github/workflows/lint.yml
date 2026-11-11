@@ -1,0 +1,41 @@
+# Runs on every push and pull request:
+#  1. shellcheck on the bash script
+#  2. the bash linter on AGENTS.md and templates/
+#  3. the PowerShell twin on the same files, so both scripts stay in agreement
+name: lint
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: shellcheck
+        run: shellcheck scripts/lint-rules.sh
+
+      - name: Lint rules files (bash)
+        run: bash scripts/lint-rules.sh
+
+      - name: Lint rules files (PowerShell)
+        shell: pwsh
+        run: ./scripts/lint-rules.ps1
+
+      - name: Linter catches the "before" example
+        # Self-test: the deliberately bad example must produce findings.
+        run: |
+          if bash scripts/lint-rules.sh tests/bad-rules.md; then
+            echo "Linter found nothing in tests/bad-rules.md, but it should have." && exit 1
+          fi
+          if pwsh -NoProfile -File scripts/lint-rules.ps1 tests/bad-rules.md; then
+            echo "PowerShell linter found nothing in tests/bad-rules.md, but it should have." && exit 1
+          fi
