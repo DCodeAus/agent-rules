@@ -13,8 +13,8 @@ The aim is **one `AGENTS.md` per repo and one personal rules file**, with every 
 | **Cursor** | Yes, natively (root and subfolders) | Nothing. Use `.cursor/rules/*.mdc` only for rules that should apply to certain paths. | [Rules](https://cursor.com/docs/context/rules) |
 | **GitHub Copilot** | Yes (coding agent, VS Code, CLI) | Nothing. If you also have `.github/copilot-instructions.md`, both are used, so keep shared rules in `AGENTS.md`. | [Custom instructions](https://docs.github.com/en/copilot/concepts/prompting-and-context/custom-instructions) · [VS Code](https://code.visualstudio.com/docs/copilot/customization/custom-instructions) |
 | **Gemini CLI** | When configured | Add the snippet below to `.gemini/settings.json`. | [GEMINI.md files](https://geminicli.com/docs/cli/gemini-md/) |
-| **Aider** | When configured | Add `read: AGENTS.md` to `.aider.conf.yml`, or run `aider --read AGENTS.md`. | [Conventions](https://aider.chat/docs/usage/conventions.html) |
-| **Windsurf** | Unconfirmed | Check the docs. If it isn't read directly, reference it from Windsurf's rules. | [Windsurf docs](https://docs.windsurf.com) |
+| **Aider** | Only when you name it (not loaded by filename) | Add `read: AGENTS.md` to `.aider.conf.yml` (a list works too), or run `aider --read AGENTS.md`. Loading it this way also marks it read-only. | [Conventions](https://aider.chat/docs/usage/conventions.html) · [Config file](https://aider.chat/docs/config/aider_conf.html) |
+| **Windsurf / Devin Desktop** | Yes, natively (root and the folders between root and where it's working) | Nothing. Use `.devin/rules/*.md` only for rules with triggers. Older `.windsurf/rules/` and `.windsurfrules` files are still imported. Windsurf's docs now redirect to Devin's. | [Local customizations](https://docs.devin.ai/desktop/cascade/memories) |
 
 **Gemini CLI**, `.gemini/settings.json`:
 ```json
@@ -43,6 +43,7 @@ Symlinks (`ln -s AGENTS.md CLAUDE.md`) work on macOS and Linux, but they often c
 | OpenAI Codex | `~/.codex/AGENTS.md` (an `AGENTS.override.md` next to it takes priority) |
 | Claude Code | `~/.claude/CLAUDE.md` |
 | Gemini CLI | `~/.gemini/GEMINI.md` |
+| Windsurf / Devin Desktop | `~/.devin/global_rules.md` (or `~/.devin/rules/*.md`) |
 | Cursor, Copilot, others | Usually a "user rules" or "personal instructions" box in the app's settings. Paste in your file. |
 
 **Keeping one copy:** store your filled-in [`templates/global.md`](../templates/global.md) somewhere permanent, such as `~/agent-rules/global.md`. Then:
